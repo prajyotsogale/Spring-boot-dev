@@ -1,0 +1,81 @@
+spring initializer - start.spring.io
+maven - manages project dependencies and import/download jar files for us.
+
+
+
+maven standard directory system in java
+
+src/main/java       - Your java source code
+src/main/resources  - Properties/config files used by app
+src/main/webapp     - JSP files and web config files other web assest(images,css,js,etc)
+src/test 			- Unit testing code and properties
+target 				- destination directory for compiled code.
+		 			  automatically created by Maven.
+
+
+
+POM file structure 
+
+-project metadata
+-dependencies
+-plugins  
+
+GAV iddd
+
+spring-boot-starter-web - 
+							adds all the dependencies like spring-web, spring-webmvc , hibernate-validator , tomcat , json, etc.
+
+spring-boot-maven-plugin  - to package the executable jar or war file
+
+
+static directory 
+-it contains css,html,js,images,etc
+
+templates directory
+eg - thymeleaf
+
+
+there are 30+ spring boot starters dependencies
+spring-boot-starter-web
+spring-boot-starter-security
+etc
+
+define the version in spring boot starter parent 
+and in dependencies, no need to add the versions of each dependencies, they will inherit from 
+spring-boot-starter-parent
+
+it provides many features like utf encoding etc
+it also provides default configuration for spring boot maven plugins
+provides spring boot default configuration like java version
+
+
+spring boot dev tools to automatically restarts your application if the code is updated.
+
+
+Spring boot actuators
+helps you moniter and manage your application
+
+
+list of all the spring boot actuators
+https://docs.spring.io/spring-boot/docs/2.1.13.RELEASE/reference/html/production-ready-endpoints.html
+
+Run file from commandline 
+
+java -jar target\runfromcmdline-0.0.1-SNAPSHOT.jar   
+
+or
+
+mvnw spring-boot:run
+
+---------------------------------------------------------------------------------------------
+
+application.properties
+
+we can use the application properties from @Value annotation
+
+change context path
+server.servlet.context-path = /context
+
+Spring container primary uses
+ioc
+dependency injection

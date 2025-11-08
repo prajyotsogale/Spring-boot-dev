@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Customer Registration Form</title>
+
+    <style >
+        .error{ color:red }
+    </style>
+</head>
+<body>
+<i>Fill out the form. Asterisk (*) means required</i>
+<br><br>
+
+<form th:action="@{/processForm}" th:object="${customer}" method="POST">
+
+    First name(*): <input type="text" th:field="*{firstName}" />
+
+    <span th:if="${#fields.hasErrors('firstName')}"
+          th:errors="*{firstName}"
+          class="error"></span>
+    <br><br>
+
+    Last name: <input type="text" th:field="*{lastName}" />
+
+    <!--Add error message if present -->
+
+    <br><br>
+
+    Free Passes: <input type="text" th:field="*{freePasses}"/>
+    <span th:if="${#fields.hasErrors('freePasses')}"
+          th:errors="*{freePasses}"
+          class="error"></span>
+    <br><br>
+    Postal Code: <input type="text" th:field="*{postalCode}"  />
+    <span th:if="${#fields.hasErrors('postalCode')}"
+          th:errors="*{postalCode}"
+          class="error" ></span>
+    <br><br>
+
+    Course Code: <input type="text" th:field="*{courseCode}"  />
+    <span th:if="${#fields.hasErrors('courseCode')}"
+          th:errors="*{courseCode}"
+          class="error" ></span>
+    <br><br>
+
+    <input type="submit" value="Submit" />
+
+
+
+</form>
+
+
+
+</body>
+</html>

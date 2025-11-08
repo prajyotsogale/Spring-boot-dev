@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Student Directory</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h3>Student Directory</h3>
+    <hr>
+    <a class="btn btn-primary" th:href="@{/addStudent}" >Add Student</a>
+
+    <table class="table table-bordered table-stripped">
+        <thead class="table-dark">
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Course</th>
+                <th>GPA</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="tempStudent : ${students}">
+                <td th:text="${tempStudent.firstName}"/>
+                <td th:text="${tempStudent.lastName}"/>
+                <td th:text="${tempStudent.course}"/>
+                <td th:text="${tempStudent.gpa}"/>
+                <td>
+                    <a th:href="@{/updateStudent(studentId=${tempStudent.id})}"
+                       class="btn btn-info">
+                        Update
+                    </a>
+                    <a th:href="@{/deleteStudent(studentId=${tempStudent.id})}"
+                       onclick="if(!(confirm('Are you sure you want to delete this employee?'))) return false"
+                       class="btn btn-danger">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

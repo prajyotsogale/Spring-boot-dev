@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElectroMart - Premium Electronics</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="text-slate-900">
+
+<!-- Header & Navigation (Dark Theme) -->
+<header class="bg-slate-900 shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <!-- Logo -->
+            <div class="flex-shrink-0">
+                <a href="#" class="text-2xl font-extrabold text-white tracking-tight flex items-center">
+                    <svg class="w-6 h-6 mr-2 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1v-3.25m-7.25 0h12.5m-12.5 0V7a2 2 0 012-2h8a2 2 0 012 2v10m-2 0h-8m8-5H7"></path></svg>
+                    CrazyCart
+                </a>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-8 text-sm font-medium">
+
+                <a th:href="@{/products(category='Laptops')}" class="text-gray-300 hover:text-sky-400 transition duration-150">Laptops</a>
+                <a th:href="@{/products(category='Speakers')}" class="text-gray-300 hover:text-sky-400 transition duration-150">Speakers</a>
+                <a th:href="@{/products(category='Mobiles')}" class="text-gray-300 hover:text-sky-400 transition duration-150">Mobiles</a>
+                <a th:href="@{/products(category='Accessories')}" class="text-gray-300 hover:text-sky-400 transition duration-150">Accessories</a>
+                <a th:href="@{/products(category='Cameras')}" class="text-gray-300 hover:text-sky-400 transition duration-150">Cameras</a>
+            </nav>
+
+            <!-- Search/User Icons & Login/Profile -->
+            <div class="flex items-center space-x-4">
+                <!-- Search Icon -->
+                <button class="text-gray-300 hover:text-sky-400 p-2 rounded-full transition duration-150 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </button>
+
+                <!-- Cart Icon -->
+                <button class="text-gray-300 hover:text-sky-400 p-2 rounded-full transition duration-150 relative focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    <span class="absolute top-1 right-1 bg-red-600 text-white text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center">3</span>
+                </button>
+
+                <!-- PROFILE: show when authenticated using sec:authorize -->
+                <div sec:authorize="isAuthenticated()" class="relative">
+                    <button id="profileButton" class="flex items-center space-x-2 text-gray-300 hover:text-sky-400 focus:outline-none">
+                        <!-- Replace the th:src with your actual image source when available.
+                             Example if you pass user.profileImageUrl in model:
+                             th:src="${user.profileImageUrl != null ? user.profileImageUrl : '/images/default-user.png'}"
+                             For now use default static path so image shows. -->
+                        <img th:src="@{/images/default-user.png}"
+                             alt="User" class="w-8 h-8 rounded-full border-2 border-sky-400 object-cover">
+                        <span class="hidden lg:inline text-sm font-medium" sec:authentication="name">User</span>
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div id="profileMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-200 z-50">
+                        <a th:href="@{/profile}" class="block px-4 py-2 text-slate-700 hover:bg-slate-100">My Profile</a>
+                        <a th:href="@{/orders}" class="block px-4 py-2 text-slate-700 hover:bg-slate-100">My Orders</a>
+                        <a th:href="@{/settings}" class="block px-4 py-2 text-slate-700 hover:bg-slate-100">Account Settings</a>
+                        <div class="border-t border-slate-200 my-1"></div>
+                        <form th:action="@{/logout}" method="post">
+                            <button type="submit" class="w-full text-left px-4 py-2 text-red-600 hover:bg-slate-100">Logout</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- If NOT logged in -->
+                <div sec:authorize="isAnonymous()">
+                    <a th:href="@{/showMyLoginPage}" class="bg-sky-500 text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-sky-600">
+                        Login / Register
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="md:hidden text-gray-300 hover:text-sky-400 focus:outline-none p-2 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu (Hidden by default) -->
+    <div id="mobile-menu" class="hidden md:hidden bg-slate-800 pb-3">
+        <a th:href="@{/products(category='Laptops')}" class="block px-4 py-2 text-base font-medium text-gray-300 hover:bg-slate-700">Laptops</a>
+        <a th:href="@{/products(category='Speakers')}" class="block px-4 py-2 text-base font-medium text-gray-300 hover:bg-slate-700">Speakers</a>
+        <a th:href="@{/products(category='Mobiles')}" class="block px-4 py-2 text-base font-medium text-gray-300 hover:bg-slate-700">Mobiles</a>
+        <a th:href="@{/products(category='Accessories')}" class="block px-4 py-2 text-base font-medium text-gray-300 hover:bg-slate-700">Accessories</a>
+        <a th:href="@{/products(category='Cameras')}" class="block px-4 py-2 text-base font-medium text-gray-300 hover:bg-slate-700">Cameras</a>
+        <!-- Added login/profile options to mobile menu -->
+
+        <hr class="border-slate-700 mx-4 my-2">
+
+        <!-- Show login for anonymous users -->
+        <div sec:authorize="isAnonymous()" class="px-4">
+            <a href="#" th:href="@{/showMyLoginPage}" id="mobile-login-button" class="block px-4 py-2 text-base font-medium text-sky-400 hover:bg-slate-700">Login / Sign Up</a>
+        </div>
+
+        <!-- Show profile links for authenticated users -->
+        <div sec:authorize="isAuthenticated()" class="px-4">
+            <a th:href="@{/profile}" id="mobile-profile-button" class="block px-4 py-2 text-base font-medium text-sky-400 hover:bg-slate-700">My Profile</a>
+            <a th:href="@{/orders}" class="block px-4 py-2 text-base font-medium text-sky-400 hover:bg-slate-700">My Orders</a>
+            <form th:action="@{/logout}" method="post" class="mt-2">
+                <button type="submit" class="w-full text-left px-4 py-2 text-red-500 hover:bg-slate-700">Logout</button>
+            </form>
+        </div>
+    </div>
+</header>
+
+<main>
+    <!-- Page Heading -->
+<section class="py-12 text-center">
+    <h2 class="text-4xl font-bold text-gray-800 mb-2">All Products</h2>
+    <p class="text-gray-500">Browse our complete collection of electronics and gadgets.</p>
+</section>
+
+<!-- Product Grid -->
+<section class="pb-16">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+
+            <!-- Product Card -->
+            <div th:each="product : ${products}"
+                 class="bg-white rounded-xl shadow hover:shadow-2xl transition transform hover:-translate-y-1">
+                <div class="relative h-56 bg-gray-100 overflow-hidden rounded-t-xl">
+                    <img th:src="${product.imageUrl}" alt="Product Image"
+                         class="w-full h-full object-contain transition-transform duration-300 hover:scale-105">
+                </div>
+                <div class="p-5">
+                    <h3 class="text-lg font-bold mb-1" th:text="${product.name}">Product Name</h3>
+                    <p class="text-sm text-gray-500 mb-3" th:text="${product.category}">Category</p>
+                    <p class="text-sm text-gray-600 line-clamp-2 mb-4" th:text="${product.description}">
+                        Product description goes here.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xl font-semibold text-sky-600" th:text="'₹' + ${product.price}">₹9999</span>
+                        <a href="#"
+                           class="bg-sky-600 text-white text-sm px-3 py-2 rounded-lg hover:bg-sky-700 transition">
+                            View
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- End Product Card -->
+
+        </div>
+    </div>
+</section>
+
+</main>
+
+<!-- Footer (Dark Theme) -->
+<footer class="bg-slate-900 text-white mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 border-b border-slate-700 pb-10">
+            <!-- Column 1: Logo & Mission -->
+            <div>
+                <a href="#" class="text-xl font-extrabold text-sky-400 tracking-tight flex items-center mb-3">ElectroMart</a>
+                <p class="text-sm text-slate-400">Your trusted source for cutting-edge electronics and premium gadgets since 2020.</p>
+            </div>
+
+            <!-- Column 2: Products -->
+            <div>
+                <h4 class="text-lg font-bold mb-4 text-white">Product Lines</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="text-slate-400 hover:text-sky-400 transition">Gaming PCs</a></li>
+                    <li><a href="#" class="text-slate-400 hover:text-sky-400 transition">Smart Home</a></li>
+                    <li><a href="#" class="text-slate-400 hover:text-sky-400 transition">Mobile Devices</a></li>
+                    <li><a href="#" class="text-slate-400 hover:text-sky-400 transition">Accessories</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Company -->
+            <div>
+                <h4 class="text-lg font-bold mb-4 text-white">Company</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="text-slate-400 hover:text-sky-400 transition">About Us</a></li>
+                    <li><a href="#" class="text-slate-400 hover:text-sky-400 transition">Careers</a></li>
+                    <li><a href="#" class="text-slate-400 hover:text-sky-400 transition">Press Kit</a></li>
+                    <li><a href="#" class="text-slate-400 hover:text-sky-400 transition">Sitemap</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 4: Support -->
+            <div>
+                <h4 class="text-lg font-bold mb-4 text-white">Support</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="text-slate-400 hover:text-sky-400 transition">Contact Us</a></li>
+                    <li><a href="#" class="text-slate-400 hover:text-sky-400 transition">Shipping & Returns</a></li>
+                    <li><a href="#" class="text-slate-400 hover:text-sky-400 transition">FAQ</a></li>
+                    <li><a href="#" class="text-slate-400 hover:text-sky-400 transition">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Copyright & Social -->
+        <div class="mt-8 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500">
+            <p>&copy; 2024 ElectroMart. All rights reserved.</p>
+            <!-- Placeholder for social media icons -->
+            <div class="flex space-x-4 mt-4 md:mt-0">
+                <a href="#" class="hover:text-sky-400 transition">Facebook</a>
+                <a href="#" class="hover:text-sky-400 transition">Twitter</a>
+                <a href="#" class="hover:text-sky-400 transition">Instagram</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+</body>
+</html>
